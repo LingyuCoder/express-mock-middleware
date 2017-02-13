@@ -41,7 +41,6 @@ export default config => {
   gaze.on('all', update);
   update();
   return (req, res, next) => {
-    console.log(mock);
     if (mock[req.path] && mock[req.path][req.method]) {
       mock[req.path][req.method](req, res);
     } else {
