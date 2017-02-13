@@ -1,12 +1,21 @@
 import Gaze from 'gaze';
+import Glob from 'glob';
+import path from 'path';
+const DEFAULT_CONFIG = {
+  glob: 'mock/**/*.js'
+};
 export default config => {
+  config = {
+    ...config,
+    ...DEFAULT_CONFIG
+  };
   const mockGlob = config.glob;
   const gaze = new Gaze(mockGlob);
   let mock = {};
 
-  function updateMock() {
+  function update() {
     mock = {};
-    glob.sync(mockGlob)
+    Glob.sync(mockGlob)
       .map(file => {
         try {
           const filePath = path.resolve(file);
@@ -28,9 +37,11 @@ export default config => {
         mock[api.uri][api.method] = api.fn;
       });
   }
-  gaze.on('ready', updateMock);
-  gaze.on('all', updateMock);
+  gaze.on('ready', update);
+  gaze.on('all', update);
+  update();
   return (req, res, next) => {
+    console.log(mock);
     if (mock[req.path] && mock[req.path][req.method]) {
       mock[req.path][req.method](req, res);
     } else {

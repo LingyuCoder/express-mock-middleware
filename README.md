@@ -24,33 +24,43 @@ const express = require('express');
 const mockMiddleware = require('express-mock-middleware');
 const app = express();
 app.use(mockMiddleware({glob: 'mock/**/*.js'}));
-app.listen(port, function (err) {
+app.listen(3000, function (err) {
   return console.log(err);
 })
 ```
 
-In `mock/products.js`:
+In `mock/info.js`:
 
 ```js
 module.exports = {
-  'GET /api/products': function (req, res) {
+  'GET /api/info': function (req, res) {
     res.json({
       "success": true,
       "meta": {
         "code": 200
       },
       "data": {
-        "products": [{
-          "name": 'someName',
-          "price": '123.00',
-          "image": '',
-          "category": ''
-        }]
+        "name": 'LingyuCoder',
+        "image": 'https://avatars1.githubusercontent.com/u/2663351?v=3&s=460'
       }
     });
   },
 };
+```
 
+Then `http://localhost:3000/api/info` will be:
+
+```json
+{
+  "success": true,
+  "meta": {
+    "code": 200
+  },
+  "data": {
+    "name": "LingyuCoder",
+    "image": "https://avatars1.githubusercontent.com/u/2663351?v=3&s=460"
+  }
+}
 ```
 
 ## License
