@@ -9,7 +9,7 @@
 [![License](http://img.shields.io/npm/l/express-mock-middleware.svg?style=flat-square)](LICENSE)
 [![npm download](https://img.shields.io/npm/dm/express-mock-middleware.svg?style=flat-square)](https://npmjs.org/package/express-mock-middleware)
 
-A simple  mock middleware for express
+A simple mock middleware for express
 
 ## Installation
 
@@ -19,12 +19,38 @@ $ npm install --save express-mock-middleware
 
 ## Usage
 
-## Test
+```js
+const express = require('express');
+const mockMiddleware = require('express-mock-middleware');
+const app = express();
+app.use(mockMiddleware({glob: 'mock/**/*.js'}));
+app.listen(port, function (err) {
+  return console.log(err);
+})
+```
 
-```bash
-$ npm run test
-$ npm run test-cov
-$ npm run test-travis
+In `mock/products.js`:
+
+```js
+module.exports = {
+  'GET /api/products': function (req, res) {
+    res.json({
+      "success": true,
+      "meta": {
+        "code": 200
+      },
+      "data": {
+        "products": [{
+          "name": 'someName',
+          "price": '123.00',
+          "image": '',
+          "category": ''
+        }]
+      }
+    });
+  },
+};
+
 ```
 
 ## License

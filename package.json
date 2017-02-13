@@ -1,7 +1,7 @@
 {
   "name": "express-mock-middleware",
   "version": "0.0.1",
-  "description": "A simple  mock middleware for express",
+  "description": "A simple mock middleware for express",
   "main": "lib/index.js",
   "scripts": {
     "test": "npm run build && ./node_modules/.bin/babel-node ./node_modules/.bin/babel-istanbul cover ./node_modules/.bin/_mocha -- --require should",
