@@ -1,9 +1,11 @@
 import Gaze from 'gaze';
 import Glob from 'glob';
 import path from 'path';
+import express from 'express';
 const DEFAULT_CONFIG = {
   glob: 'mock/**/*.js'
 };
+const mockApp = express();
 export default config => {
   config = {
     ...config,
@@ -35,16 +37,18 @@ export default config => {
       .forEach(api => {
         mock[api.uri] = mock[api.uri] || {};
         mock[api.uri][api.method] = api.fn;
+        subApp.all(api.uri, (req, res, next) => {
+          if (req.method === api.method) {
+            mock[api.uri][api.method](req, res);
+          }
+          else {
+            next();
+          }
+        });
       });
   }
   gaze.on('ready', update);
   gaze.on('all', update);
   update();
-  return (req, res, next) => {
-    if (mock[req.path] && mock[req.path][req.method]) {
-      mock[req.path][req.method](req, res);
-    } else {
-      next();
-    }
-  };
+  return mockApp;
 };
