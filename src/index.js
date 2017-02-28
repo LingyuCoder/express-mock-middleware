@@ -37,7 +37,7 @@ export default config => {
       .forEach(api => {
         mock[api.uri] = mock[api.uri] || {};
         mock[api.uri][api.method] = api.fn;
-        subApp.all(api.uri, (req, res, next) => {
+        mockApp.all(api.uri, (req, res, next) => {
           if (req.method === api.method) {
             mock[api.uri][api.method](req, res);
           }
